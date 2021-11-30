@@ -51,10 +51,23 @@ function Header() {
           <HomeIcon className="navButton" />
           <MenuIcon className="h-6 md:hidden  cursor-pointer" />
 
-          <PaperAirplaneIcon className="navButton" />
+          <div className="relative navButton">
+            <PaperAirplaneIcon className="navButton rotate-45" />
+            <div className="absolute -top-1 -right-2 text-xs w-5 h-5 bg-red-500 rounded-full flex items-center justify-center animate-pulse text-white">
+              3
+            </div>
+          </div>
+          <PlusCircleIcon className="navButton" />
+          <UserGroupIcon className="navButton" />
+          <HeartIcon className="navButton" />
+
+          <img
+            className="h-10 rounded-full cursor-pointer"
+            src="https://links.papareact.com/3ke"
+            alt="profile picture"
+          />
         </div>
       </div>
-      {/* comment to push to main */}
     </header>
   );
 }
