@@ -25,7 +25,6 @@ function Stories() {
       ))}
     </div>
   );
-  console.log(profile);
 }
 
 export default Stories;
