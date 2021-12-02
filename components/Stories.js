@@ -6,7 +6,7 @@ function Stories() {
   const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
-    const suggestions = [...Array(20)].map((_, i) => ({
+    const suggestions = [...Array(10)].map((_, i) => ({
       //   contextualCard creates fake data including name, avatar, address etc...
       ...faker.helpers.contextualCard(),
       id: i,
@@ -25,6 +25,7 @@ function Stories() {
       ))}
     </div>
   );
+  console.log(profile);
 }
 
 export default Stories;
