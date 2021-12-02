@@ -5,12 +5,13 @@ import {
   EmojiHappyIcon,
   HeartIcon,
   PaperAirplaneIcon,
-} from '@heroicons/react/solid';
+} from '@heroicons/react/outline';
+
+import { HeartIcon as HeartIconFilled } from '@heroicons/react/solid';
 
 function Post({ id, username, userImg, img, caption }) {
   return (
-    <div>
-      {/* Header */}
+    <div className="bg-white my-7 border rounded-sm">
       <div className="flex items-center p-5">
         <img
           src={userImg}
@@ -22,9 +23,17 @@ function Post({ id, username, userImg, img, caption }) {
       </div>
 
       {/* img */}
+      <img src={img} alt="User Post" className="object-cover w-full" />
 
       {/* buttons */}
-
+      <div className="flex justify-between p-4">
+        <div className="flex space-x-4">
+          <HeartIcon className="button" />
+          <ChatIcon className="button" />
+          <PaperAirplaneIcon className="button" />
+        </div>
+        <BookmarkIcon className="button" />
+      </div>
       {/* caption */}
 
       {/* comments */}
