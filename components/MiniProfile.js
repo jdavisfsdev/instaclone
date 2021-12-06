@@ -8,11 +8,11 @@ function MiniProfile() {
       />
 
       <div>
-        <h2>jdpdx1</h2>
-        <h3>Welcome to Instagram</h3>
+        <h2 className="font-bold">jdpdx1</h2>
+        <h3 className="text-sm text-gray-400">Welcome to Instagram</h3>
       </div>
 
-      <button>Sign Out</button>
+      <button className="text-sm font-semibold text-blue-400">Sign Out</button>
     </div>
   );
 }
