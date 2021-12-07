@@ -9,8 +9,11 @@ import {
 } from '@heroicons/react/outline';
 import { HomeIcon } from '@heroicons/react/solid';
 import Home from '../pages';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 function Header() {
+  const { data: session } = useSession();
+
   return (
     <header className="shadow-sm border-b bg-white sticky top-0 z-50">
       {/* Left */}
@@ -51,22 +54,29 @@ function Header() {
           <HomeIcon className="navButton" />
           <MenuIcon className="h-6 md:hidden  cursor-pointer" />
 
-          <div className="relative navButton">
-            <PaperAirplaneIcon className="navButton rotate-45" />
-            <div className="absolute -top-1 -right-2 text-xs w-5 h-5 bg-red-500 rounded-full flex items-center justify-center animate-pulse text-white">
-              3
-            </div>
-          </div>
+          {session ? (
+            <>
+              <div className="relative navButton">
+                <PaperAirplaneIcon className="navButton rotate-45" />
+                <div className="absolute -top-1 -right-2 text-xs w-5 h-5 bg-red-500 rounded-full flex items-center justify-center animate-pulse text-white">
+                  3
+                </div>
+              </div>
 
-          <PlusCircleIcon className="navButton" />
-          <UserGroupIcon className="navButton" />
-          <HeartIcon className="navButton" />
+              <PlusCircleIcon className="navButton" />
+              <UserGroupIcon className="navButton" />
+              <HeartIcon className="navButton" />
 
-          <img
-            className="h-10 rounded-full cursor-pointer"
-            src="https://links.papareact.com/3ke"
-            alt="profile picture"
-          />
+              <img
+                onClick={signOut}
+                className="h-10 w-10 rounded-full cursor-pointer"
+                src={session?.user?.image}
+                alt="profile picture"
+              />
+            </>
+          ) : (
+            <button onClick={signIn}>Sign In</button>
+          )}
         </div>
       </div>
     </header>
