@@ -1,3 +1,4 @@
+import { useSession } from 'next-auth/react';
 import Post from './Post';
 
 const DUMMY_DATA = [
@@ -25,15 +26,16 @@ const DUMMY_DATA = [
 ];
 
 function Posts() {
+  const { data: session } = useSession();
   return (
     <div>
       {DUMMY_DATA.map((item) => (
         <Post
           key={item.id}
           id={item.id}
-          username={item.username}
-          userImg={item.userImg}
-          img={item.img}
+          username={session?.user?.username}
+          userImg={session?.user?.image}
+          img={session?.user?.image}
           caption={item.caption}
         />
       ))}
