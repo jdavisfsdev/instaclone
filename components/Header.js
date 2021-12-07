@@ -9,8 +9,13 @@ import {
 } from '@heroicons/react/outline';
 import { HomeIcon } from '@heroicons/react/solid';
 import Home from '../pages';
+import { useSession } from 'next-auth/react';
 
 function Header() {
+  const { data: session } = useSession();
+
+  console.log('SESSIONS', session);
+
   return (
     <header className="shadow-sm border-b bg-white sticky top-0 z-50">
       {/* Left */}
