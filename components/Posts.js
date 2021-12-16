@@ -1,44 +1,45 @@
-import { useSession } from 'next-auth/react';
-import { const [state, setstate] = useState(initialState)}
+import { useState, useEffect } from 'react';
+import { onSnapshot, collection, query, orderBy } from '@firebase/firestore';
+import { db } from '../firebase.js';
 import Post from './Post';
 
-const DUMMY_DATA = [
-  {
-    id: '123',
-    username: 'jdpdx1',
-    userImg: 'https://links.papareact.com/3ke',
-    img: 'https://links.papareact.com/3ke',
-    caption: 'Fake caption here',
-  },
-  {
-    id: '123',
-    username: 'jdpdx1',
-    userImg: 'https://links.papareact.com/3ke',
-    img: 'https://links.papareact.com/3ke',
-    caption: 'Fake caption here',
-  },
-  {
-    id: '123',
-    username: 'jdpdx1',
-    userImg: 'https://links.papareact.com/3ke',
-    img: 'https://links.papareact.com/3ke',
-    caption: 'Fake caption here',
-  },
-];
-
 function Posts() {
-const [posts, setPosts] = useState([])
-  const { data: session } = useSession();
+  const [posts, setPosts] = useState([]);
+
+  // useEffect(() => {
+  //   const unsubscribe = onSnapshot(
+  //     query(collection(db, 'posts'), orderBy('timestamp', 'desc')),
+  //     (snapshot) => {
+  //       setPosts(snapshot.docs);
+  //     }
+  //   );
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, []);
+
+  // Refactored useEffect, pretty rad
+  useEffect(
+    () =>
+      onSnapshot(
+        query(collection(db, 'posts'), orderBy('timestamp', 'desc')),
+        (snapshot) => {
+          setPosts(snapshot.docs);
+        }
+      ),
+    [db]
+  );
+
   return (
     <div>
-      {DUMMY_DATA.map((item) => (
+      {posts.map((post) => (
         <Post
-          key={item.id}
-          id={item.id}
-          username={session?.user?.username}
-          userImg={session?.user?.image}
-          img={session?.user?.image}
-          caption={item.caption}
+          key={post.id}
+          id={post.id}
+          username={post.data().username}
+          userImg={post.data().profileImg}
+          img={post.data().image}
+          caption={post.data().caption}
         />
       ))}
     </div>
