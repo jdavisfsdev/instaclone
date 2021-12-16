@@ -7,10 +7,51 @@ import {
   PaperAirplaneIcon,
 } from '@heroicons/react/outline';
 import { HeartIcon as HeartIconFilled } from '@heroicons/react/solid';
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  serverTimestamp,
+} from 'firebase/firestore';
 import { useSession } from 'next-auth/react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { db } from '../firebase';
 
 function Post({ id, username, userImg, img, caption }) {
   const { data: session } = useSession();
+  const [comment, setComment] = useState([]);
+  const [comments, setComments] = useState([]);
+
+  // query the db, first into posts, then post buy ID, then comments collection associated with post.ID
+  useEffect(
+    () =>
+      onSnapshot(
+        query(
+          collection(db, 'posts', id, 'comments'),
+          orderBy('timestamp', 'desc')
+        ),
+        (snapshot) => setComments(snapshot.docs)
+      ),
+    [db]
+  );
+  const sendComment = async (e) => {
+    e.preventDefault();
+    const commentToSend = comment;
+    setComment('');
+
+    // Add comment to the backend
+
+    await addDoc(collection(db, 'posts', id, 'comments'), {
+      comment: commentToSend,
+      username: session.user.username,
+      userImage: session.user.image,
+      timestamp: serverTimestamp(),
+    });
+  };
+
   return (
     <div className="bg-white my-7 border rounded-sm">
       <div className="flex items-center p-5">
@@ -51,10 +92,19 @@ function Post({ id, username, userImg, img, caption }) {
           <EmojiHappyIcon className="h-7" />
           <input
             type="text"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
             placeholder="Add a comment..."
             className="border-none flex-1 focus:ring-0 outline-none"
           />
-          <button className="font-semibold text-blue-400">Post</button>
+          <button
+            type="submit"
+            disabled={!comment}
+            onClick={sendComment}
+            className="font-semibold text-blue-400"
+          >
+            Post
+          </button>
         </form>
       )}
     </div>
