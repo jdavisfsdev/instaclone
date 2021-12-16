@@ -1,4 +1,5 @@
 import { useSession } from 'next-auth/react';
+import { const [state, setstate] = useState(initialState)}
 import Post from './Post';
 
 const DUMMY_DATA = [
@@ -26,6 +27,7 @@ const DUMMY_DATA = [
 ];
 
 function Posts() {
+const [posts, setPosts] = useState([])
   const { data: session } = useSession();
   return (
     <div>
