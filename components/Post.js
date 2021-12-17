@@ -10,6 +10,7 @@ import { HeartIcon as HeartIconFilled } from '@heroicons/react/solid';
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   onSnapshot,
   orderBy,
@@ -28,6 +29,7 @@ function Post({ id, username, userImg, img, caption }) {
   const [comment, setComment] = useState([]);
   const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState([]);
+  const [hasLiked, setHasLiked] = useState(false);
 
   // query the db, first into posts, then post buy ID, then comments collection associated with post.ID
   useEffect(
@@ -50,10 +52,22 @@ function Post({ id, username, userImg, img, caption }) {
     [db, id]
   );
 
+  useEffect(
+    () =>
+      setHasLiked(
+        likes.findIndex((like) => like.id === session?.user?.uid) !== -1
+      ),
+    [likes]
+  );
+
   const likePost = async () => {
-    await setDoc(doc(db, 'posts', id, 'likes', session.user.uid), {
-      username: session.user.username,
-    });
+    if (hasLiked) {
+      await deleteDoc(doc(db, 'posts', id, 'likes', session.user.uid));
+    } else {
+      await setDoc(doc(db, 'posts', id, 'likes', session.user.uid), {
+        username: session.user.username,
+      });
+    }
   };
   const sendComment = async (e) => {
     e.preventDefault();
