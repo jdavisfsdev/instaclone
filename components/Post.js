@@ -103,7 +103,15 @@ function Post({ id, username, userImg, img, caption }) {
       {session && (
         <div className="flex justify-between p-4">
           <div className="flex space-x-4">
-            <HeartIcon onClick={likePost} className="button" />
+            {hasLiked ? (
+              <HeartIconFilled
+                onClick={likePost}
+                className="button"
+                className="text-red-500"
+              />
+            ) : (
+              <HeartIcon onClick={likePost} className="button" />
+            )}
             <ChatIcon className="button" />
             <PaperAirplaneIcon className="button" />
           </div>
